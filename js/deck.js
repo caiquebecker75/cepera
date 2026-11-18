@@ -3,6 +3,8 @@
    cursor, lightbox, 3D/AR sob demanda, fundo vivo e modo rolagem no celular */
 (() => {
   'use strict';
+  // pasta base dos arquivos compartilhados ('' na raiz, '../' em /apresentacao/)
+  const ROOT = document.documentElement.dataset.root || '';
   const $ = (s, r = document) => r.querySelector(s);
   const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
   const body = document.body;
@@ -203,14 +205,14 @@
   /* ---------- 3D / AR (carregado sob demanda) ---------- */
   const idx3d = slides.findIndex(s => s.hasAttribute('data-3d'));
   const MODELS = {
-    a: { src: 'assets/models/modulo-a-experiencia.glb', dim: 'Módulo de chão<br>≈ 72 × 46 × 186 cm', alt: 'Configuração A, módulo de chão com testeira e cartela de ocasião' },
-    b: { src: 'assets/models/modulo-b-presenca.glb', dim: 'Expositor compacto<br>≈ 50 × 34 × 142 cm', alt: 'Configuração B, expositor compacto' },
-    c: { src: 'assets/models/modulo-c-essencial.glb', dim: 'Kit de gôndola<br>régua · porta-preço · stopper', alt: 'Configuração C, kit de gôndola com régua, porta-preço e stopper' }
+    a: { src: ROOT + 'assets/models/modulo-a-experiencia.glb', dim: 'Módulo de chão<br>≈ 72 × 46 × 186 cm', alt: 'Configuração A, módulo de chão com testeira e cartela de ocasião' },
+    b: { src: ROOT + 'assets/models/modulo-b-presenca.glb', dim: 'Expositor compacto<br>≈ 50 × 34 × 142 cm', alt: 'Configuração B, expositor compacto' },
+    c: { src: ROOT + 'assets/models/modulo-c-essencial.glb', dim: 'Kit de gôndola<br>régua · porta-preço · stopper', alt: 'Configuração C, kit de gôndola com régua, porta-preço e stopper' }
   };
   let mvLoaded = false, mv = null;
   function loadMV() {
     if (mvLoaded || idx3d < 0) return; mvLoaded = true;
-    const sc = document.createElement('script'); sc.type = 'module'; sc.src = 'vendor/model-viewer.min.js'; document.head.appendChild(sc);
+    const sc = document.createElement('script'); sc.type = 'module'; sc.src = ROOT + 'vendor/model-viewer.min.js'; document.head.appendChild(sc);
     const slot = $('#mvSlot');
     mv = document.createElement('model-viewer');
     Object.entries({ src: MODELS.a.src, alt: MODELS.a.alt, 'camera-controls': '', 'touch-action': 'pan-y', 'auto-rotate': '', 'auto-rotate-delay': '1500', 'rotation-per-second': '14deg', 'shadow-intensity': '1.1', 'shadow-softness': '.8', exposure: '1.05', 'environment-image': 'neutral', 'camera-orbit': '28deg 76deg auto', 'interaction-prompt': 'none', ar: '', 'ar-modes': 'webxr scene-viewer quick-look', 'ar-placement': 'floor', 'ar-scale': 'fixed', loading: 'eager' })
@@ -231,7 +233,7 @@
   let currentModel = 'a', qrDone = '';
   function setupQR(force) {
     const box = $('#qrBox'); if (!box || !window.qrcode) { if (box && !window.qrcode) setTimeout(setupQR, 400); return; }
-    const url = new URL('ar.html?m=' + currentModel, location.href).href;
+    const url = new URL(ROOT + 'ar.html?m=' + currentModel, location.href).href;
     if (qrDone === url && !force) return; qrDone = url;
     const q = qrcode(0, 'M'); q.addData(url); q.make();
     box.innerHTML = q.createSvgTag({ cellSize: 6, margin: 0, scalable: true });

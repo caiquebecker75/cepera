@@ -69,3 +69,8 @@ cd cepera && python3 tools/build_models.py
 ## Fontes
 
 Lista completa na tela “Fontes” da apresentação (AAFC/Euromonitor, Kantar, cepera.com.br, Marcas pelo Mundo, Involves, ANPD e sites dos concorrentes citados).
+
+## Dois links
+
+- `index.html` → **projetos.75lab.com.br/cepera/**: arquivo de planejamento (versão completa).
+- `apresentacao/index.html` → **projetos.75lab.com.br/cepera/apresentacao/**: apresentação comercial. Usa os mesmos `css/`, `js/`, `vendor/` e `assets/` da raiz (caminhos com `../` e `data-root="../"` no `<html>`). Editar o conteúdo comercial só neste arquivo não altera o planejamento.
